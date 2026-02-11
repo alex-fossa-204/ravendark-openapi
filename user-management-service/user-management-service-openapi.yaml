@@ -1,0 +1,200 @@
+openapi: 3.0.3
+info:
+  title: User Management Service
+  description: Сервис предназначен для выполнения базовых операций над учетными записями пользователей
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: employee-personal-data
+    description: Персональные данные сотрудника
+
+paths:
+  /user-management/v1/personal-data/employee/card:
+    get:
+      tags:
+        - employee-personal-data
+      summary: UMS-0001. Получение персональных данных сотрудника
+      description: Метод возвращает персональные данные сотрудника
+      operationId: getEmployeePersonalData
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userGUID
+          in: header
+          required: true
+          description: Глобальный идентификатор пользователя (далее будет изменен на JWT)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное получение данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeePersonalDataCardResponse'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - employee-personal-data
+      summary: UMS-0002. Создание персональных данных сотрудника
+      description: Метод создает персональные данные сотрудника
+      operationId: createEmployeePersonalData
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userGUID
+          in: header
+          required: true
+          description: Глобальный идентификатор пользователя (далее будет изменен на JWT)
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        description: Персональные данные сотрудника для создания
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeePersonalDataCardPostRequest'
+      responses:
+        '201':
+          description: Успешное создание данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeePersonalDataCardPostResponse'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Данные уже существуют
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT токен для авторизации
+
+  schemas:
+    EmployeePersonalDataCardResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/PersonalDataCard'
+
+    EmployeePersonalDataCardPostRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/PersonalDataCard'
+
+    EmployeePersonalDataCardPostResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/PersonalDataCard'
+
+    PersonalDataCard:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - birthDate
+      properties:
+        firstName:
+          type: string
+          description: Имя пользователя
+          minLength: 1
+          maxLength: 100
+        secondName:
+          type: string
+          description: Отчество пользователя
+          maxLength: 100
+          nullable: true
+        lastName:
+          type: string
+          description: Фамилия пользователя
+          minLength: 1
+          maxLength: 100
+        birthDate:
+          type: string
+          format: date
+          description: Дата рождения в формате YYYY-MM-DD
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - timestamp
+      properties:
+        error:
+          type: string
+          description: Код ошибки
+        message:
+          type: string
+          description: Описание ошибки
+        details:
+          type: array
+          description: Детали ошибки (опционально)
+          items:
+            type: string
+        timestamp:
+          type: string
+          format: date-time
+          description: Время возникновения ошибки
+        path:
+          type: string
+          description: Путь запроса, вызвавшего ошибку
