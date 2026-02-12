@@ -125,28 +125,91 @@ components:
     EmployeePersonalDataCardResponse:
       type: object
       required:
-        - data
+        - employeeUuid
       properties:
-        data:
-          $ref: '#/components/schemas/PersonalDataCard'
+        employeeUuid:
+          type: string
+          description: Уникальный идентификатор пользователя в системе
+        employeeGlobalState:
+          $ref: '#/components/schemas/EmployeeGlobalState'
+        generalInfo:
+          $ref: '#/components/schemas/EmployeeGeneralInfo'
+        createDatetime:
+          type: string
+          description: Дата создания записи
+        updateDatetime:
+          type: string
+          description: Дата обновления записи
 
     EmployeePersonalDataCardPostRequest:
       type: object
       required:
-        - data
+        - generalInfo
       properties:
-        data:
-          $ref: '#/components/schemas/PersonalDataCard'
+        employeeGlobalState:
+          $ref: '#/components/schemas/EmployeeGlobalState'
+        generalInfo:
+          $ref: '#/components/schemas/EmployeeGeneralInfo'
 
     EmployeePersonalDataCardPostResponse:
       type: object
       required:
-        - data
+        - employeeUuid
       properties:
-        data:
-          $ref: '#/components/schemas/PersonalDataCard'
+        employeeUuid:
+          type: string
+          description: Уникальный идентификатор пользователя в системе
+        employeeGlobalState:
+          $ref: '#/components/schemas/EmployeeGlobalState'
+        generalInfo:
+          $ref: '#/components/schemas/EmployeeGeneralInfo'
+        createDatetime:
+          type: string
+          description: Дата создания записи
+        updateDatetime:
+          type: string
+          description: Дата обновления записи
 
-    PersonalDataCard:
+    EmployeeGlobalState:
+      type: object
+      required:
+        - sysName
+        - name
+      properties:
+        sysName:
+          type: string
+          description: Системное имя статуса
+          minLength: 1
+          maxLength: 100
+        name:
+          type: string
+          description: Наименование статуса
+          maxLength: 100
+          nullable: true
+        description:
+          type: string
+          description: Описание статуса
+          minLength: 1
+          maxLength: 100
+        imageUrl:
+          type: string
+          description: Ссылка на картинку статуса
+        createDatetime:
+          type: string
+          description: Дата создания записи
+        updateDatetime:
+          type: string
+          description: Дата обновления записи
+
+    EmployeeGeneralInfo:
+      type: object
+      required:
+        - personalData
+      properties:
+        personalData:
+          $ref: '#/components/schemas/PersonalData'
+
+    PersonalData:
       type: object
       required:
         - firstName
