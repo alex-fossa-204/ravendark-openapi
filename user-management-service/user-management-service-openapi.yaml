@@ -147,7 +147,8 @@ components:
         - generalInfo
       properties:
         employeeGlobalState:
-          $ref: '#/components/schemas/EmployeeGlobalState'
+          type: string
+          description: "Системное имя статуса пользователя"
         generalInfo:
           $ref: '#/components/schemas/EmployeeGeneralInfo'
 
