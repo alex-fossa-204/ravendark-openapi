@@ -69,7 +69,7 @@ paths:
       parameters:
         - name: userGUID
           in: header
-          required: true
+          required: false
           description: Глобальный идентификатор пользователя (далее будет изменен на JWT)
           schema:
             type: string
