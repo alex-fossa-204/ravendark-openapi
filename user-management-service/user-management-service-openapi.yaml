@@ -8,7 +8,7 @@ servers:
     description: Local development server
 
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 
 tags:
   - name: employee-personal-data
@@ -16,64 +16,14 @@ tags:
 
 paths:
   /user-management/v1/employee/personal-data/card:
-    get:
-      tags:
-        - employee-personal-data
-      summary: UMS-0001. Получение персональных данных сотрудника
-      description: Метод возвращает персональные данные сотрудника
-      operationId: getEmployeePersonalData
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: userGUID
-          in: header
-          required: true
-          description: Глобальный идентификатор пользователя (далее будет изменен на JWT)
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Успешное получение данных
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmployeePersonalDataCardResponse'
-        '400':
-          description: Некорректный запрос
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
     post:
       tags:
         - employee-personal-data
-      summary: UMS-0002. Создание персональных данных сотрудника
+      summary: UMS-0001. Создание персональных данных сотрудника
       description: Метод создает персональные данные сотрудника
       operationId: createEmployeePersonalData
       security:
-        - bearerAuth: []
-      parameters:
-        - name: userGUID
-          in: header
-          required: false
-          description: Глобальный идентификатор пользователя (далее будет изменен на JWT)
-          schema:
-            type: string
-            format: uuid
+        - bearerAuth: [ ]
       requestBody:
         required: true
         description: Персональные данные сотрудника для создания
@@ -102,6 +52,47 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: Данные уже существуют
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - employee-personal-data
+      summary: UMS-0002. Получение персональных данных сотрудника
+      description: Метод возвращает персональные данные сотрудника
+      operationId: getEmployeePersonalData
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: userGUID
+          in: header
+          required: true
+          description: Глобальный идентификатор пользователя (далее будет изменен на JWT)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное получение данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeePersonalDataCardResponse'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Не авторизован
           content:
             application/json:
               schema:
@@ -144,13 +135,17 @@ components:
     EmployeePersonalDataCardPostRequest:
       type: object
       required:
-        - generalInfo
+        - corpEmail
       properties:
+        generalInfo:
+          $ref: '#/components/schemas/EmployeeGeneralInfo'
+        corpEmail:
+          type: string
+          description: "Корпоративная почта"
         employeeGlobalState:
           type: string
           description: "Системное имя статуса пользователя"
-        generalInfo:
-          $ref: '#/components/schemas/EmployeeGeneralInfo'
+
 
     EmployeePersonalDataCardPostResponse:
       type: object
