@@ -121,7 +121,10 @@ components:
         employeeUuid:
           type: string
           description: Уникальный идентификатор пользователя в системе
-        employeeGlobalState:
+        email:
+          type: string
+          description: Корпоративная почта
+        globalState:
           $ref: '#/components/schemas/EmployeeGlobalState'
         generalInfo:
           $ref: '#/components/schemas/EmployeeGeneralInfo'
@@ -142,7 +145,7 @@ components:
         corpEmail:
           type: string
           description: "Корпоративная почта"
-        employeeGlobalState:
+        globalState:
           type: string
           description: "Системное имя статуса пользователя"
 
@@ -151,11 +154,15 @@ components:
       type: object
       required:
         - employeeUuid
+        - email
       properties:
         employeeUuid:
           type: string
           description: Уникальный идентификатор пользователя в системе
-        employeeGlobalState:
+        email:
+          type: string
+          description: Корпоративная почта
+        globalState:
           $ref: '#/components/schemas/EmployeeGlobalState'
         generalInfo:
           $ref: '#/components/schemas/EmployeeGeneralInfo'
