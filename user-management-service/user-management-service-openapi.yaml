@@ -15,7 +15,7 @@ tags:
     description: Персональные данные сотрудника
 
 paths:
-  /user-management/v1/personal-data/employee/card:
+  /user-management/v1/employee/personal-data/card:
     get:
       tags:
         - employee-personal-data
