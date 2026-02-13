@@ -197,12 +197,6 @@ components:
         imageUrl:
           type: string
           description: Ссылка на картинку статуса
-        createDatetime:
-          type: string
-          description: Дата создания записи
-        updateDatetime:
-          type: string
-          description: Дата обновления записи
 
     EmployeeGeneralInfo:
       type: object
